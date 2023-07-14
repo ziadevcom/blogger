@@ -1,5 +1,14 @@
-import Image from "next/image";
+"use client";
+
+import { Button, useColorMode } from "@chakra-ui/react";
 
 export default function Home() {
-  return <p>Hello World</p>;
+  const { colorMode, toggleColorMode } = useColorMode();
+  return (
+    <div>
+      <Button onClick={toggleColorMode}>
+        Toggle {colorMode === "light" ? "Dark" : "Light"}
+      </Button>
+    </div>
+  );
 }
