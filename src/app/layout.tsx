@@ -18,7 +18,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <main className="container mx-auto">{children}</main>
+        </Providers>
       </body>
     </html>
   );
