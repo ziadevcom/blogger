@@ -1,3 +1,6 @@
+import "@fontsource/syne/400.css";
+import "@fontsource/inter/400.css";
+
 import {
   extendTheme,
   withDefaultColorScheme,
@@ -6,6 +9,10 @@ import {
 
 const customTheme = extendTheme(
   {
+    fonts: {
+      heading: `'Inter', sans-serif`,
+      body: `'Inter', sans-serif`,
+    },
     components: {
       Button: {
         defaultProps: { variant: "solid" },

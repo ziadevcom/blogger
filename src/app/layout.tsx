@@ -2,6 +2,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "@/contexts";
+import { Header } from "@/app/(root components)/Header/index";
+import { Footer } from "./(root components)/Footer/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,9 +19,11 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className="container mx-auto">
         <Providers>
-          <main className="container mx-auto">{children}</main>
+          <Header />
+          {children}
+          <Footer />
         </Providers>
       </body>
     </html>

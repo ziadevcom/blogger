@@ -1,21 +1,17 @@
 "use client";
 
 import {
-  Button,
   Checkbox,
   Input,
   Select,
   Stack,
-  useColorMode,
+  Text,
+  Heading,
 } from "@chakra-ui/react";
 
 export default function Home() {
-  const { colorMode, toggleColorMode } = useColorMode();
   return (
     <div>
-      <Button onClick={toggleColorMode} variant="solid">
-        Toggle {colorMode === "light" ? "Dark" : "Light"}
-      </Button>
       <Input placeholder="Basic usage" focusBorderColor="brand.400" />
       <Select placeholder="Select option">
         <option value="option1">Option 1</option>
@@ -29,6 +25,13 @@ export default function Home() {
         </Checkbox>
         <Checkbox>Do you agree?</Checkbox>
       </Stack>
+      <Heading>I am a Heading</Heading>{" "}
+      <Text>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure,
+        doloremque explicabo, cum quod, magni inventore rem accusantium
+        voluptatem facere tempora atque repudiandae officiis eveniet similique
+        veniam adipisci placeat impedit cupiditate.
+      </Text>
     </div>
   );
 }
