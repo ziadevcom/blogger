@@ -1,4 +1,5 @@
 "use client";
+import axios, { AxiosError } from "axios";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -8,8 +9,7 @@ import {
   Button,
   Input,
   Stack,
-  InputElementProps,
-  StyleFunctionProps,
+  useToast,
 } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -40,14 +40,56 @@ const schema = yup
 type FormData = yup.InferType<typeof schema>;
 
 function Register() {
+  const toast = useToast();
   const {
     handleSubmit,
     register,
+    setError,
     formState: { errors, isSubmitting },
-  } = useForm<FormData>({ resolver: yupResolver(schema) });
+  } = useForm<FormData>({ resolver: yupResolver(schema), mode: "onTouched" });
 
-  function onSubmit(values: FormData) {
-    console.log(values);
+  async function onSubmit(values: FormData) {
+    try {
+      const response: any = await axios("/api/auth/register", {
+        method: "POST",
+        data: values,
+      });
+
+      if (response.data.user) {
+        console.log("User created.");
+        toast({
+          title: "Account created.",
+          description: "Please verify your email.",
+          status: "success",
+          duration: 10000,
+          isClosable: true,
+        });
+      }
+
+      console.log(response);
+    } catch (error: any) {
+      // Set custom errors for react hook form if invalid inputs provided
+      if (error instanceof AxiosError) {
+        const errors: { email?: string; password?: string } =
+          error.response?.data;
+        Object.entries(errors).forEach(([errorField, errorText]) => {
+          setError(
+            errorField as any,
+            {
+              type: "manual",
+              message: errorText,
+            },
+            { shouldFocus: true }
+          );
+        });
+        return;
+      }
+      toast({
+        title: "Something went wrong.",
+        description: "Please refresh page and try again.",
+        status: "error",
+      });
+    }
   }
 
   const inputStyleProps = {
