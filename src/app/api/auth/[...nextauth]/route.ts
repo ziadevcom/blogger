@@ -1,9 +1,13 @@
+import * as yup from "yup";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/db/prisma.client";
+import bcrypt from "bcrypt";
+
+const ERROR_STATEMENT = "Invalid login credentials.";
 
 const handler = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -18,11 +22,6 @@ const handler = NextAuth({
     }),
     CredentialsProvider({
       credentials: {
-        name: {
-          label: "Name",
-          type: "text",
-          placeholder: "John Doe",
-        },
         email: {
           label: "Email",
           type: "text",
@@ -34,18 +33,30 @@ const handler = NextAuth({
         },
       },
       async authorize(credentials, req) {
-        // Add logic here to look up the user from the credentials supplied
-        const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
+        const { email, password }: any = credentials;
 
-        if (user) {
-          // Any object returned will be saved in `user` property of the JWT
-          return user;
-        } else {
-          // If you return null then an error will be displayed advising the user to check their details.
-          return null;
+        const userLoginSchema = yup.object({
+          email: yup.string().required().email(),
+          password: yup.string().required(),
+        });
 
-          // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
-        }
+        console.log(credentials);
+
+        await userLoginSchema.validate({ email, password });
+
+        const user = await prisma.user.findFirst({ where: { email } });
+
+        if (!user || !user.hashedPassword) throw new Error(ERROR_STATEMENT);
+
+        // Check password
+        const isCorrectPassword = await bcrypt.compare(
+          password,
+          user.hashedPassword
+        );
+
+        if (!isCorrectPassword) throw new Error(ERROR_STATEMENT);
+
+        return user;
       },
     }),
   ],
