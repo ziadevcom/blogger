@@ -25,6 +25,7 @@ const schema = yup
     password: yup
       .string()
       .required("Password is required.")
+      .notOneOf([yup.ref("email")], "Username & password can't be same.")
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
         "Password must contain 8 characters, one uppercase, one lowercase, one number and one special case character."
@@ -101,7 +102,7 @@ function Register() {
     <div className="p-4 md:p-8">
       <h2 className="text-center text-lg md:text-2xl">Register</h2>
       <div className="py-2 md:py-4"></div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} method="POST">
         <Stack spacing={[4, 8]}>
           <FormControl isInvalid={errors.email as unknown as boolean}>
             <FormLabel htmlFor="email" className="sr-only">
