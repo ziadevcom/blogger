@@ -69,26 +69,27 @@ function Register() {
 
       console.log(response);
     } catch (error: any) {
-      // Set custom errors for react hook form if invalid inputs provided
-      if (error instanceof AxiosError) {
-        const errors: { email?: string; password?: string } =
-          error.response?.data;
-        Object.entries(errors).forEach(([errorField, errorText]) => {
-          setError(
-            errorField as any,
-            {
-              type: "manual",
-              message: errorText,
-            },
-            { shouldFocus: true }
-          );
+      console.log(error);
+      if (error.response.status === 500) {
+        return toast({
+          title: "Something went wrong.",
+          description:
+            "Please refresh page and try again If the issue persists, reach us at me@ziadev.com.",
+          status: "error",
         });
-        return;
       }
-      toast({
-        title: "Something went wrong.",
-        description: "Please refresh page and try again.",
-        status: "error",
+      // Set custom errors for react hook form if invalid inputs provided
+      const errors: { email?: string; password?: string } =
+        error.response?.data;
+      Object.entries(errors).forEach(([errorField, errorText]) => {
+        setError(
+          errorField as any,
+          {
+            type: "manual",
+            message: errorText,
+          },
+          { shouldFocus: true }
+        );
       });
     }
   }
