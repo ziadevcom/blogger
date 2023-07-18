@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/db/prisma.client";
 import { formatYupErrors } from "@/utils/formatYupErrors";
 import bcrypt from "bcrypt";
+import { randomUUID } from "crypto";
+import { sendMail } from "@/utils/sendMail";
 
 const userRegistrationSchema = yup.object({
   email: yup
@@ -55,6 +57,16 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
     if (!newUser) throw new Error("Could not create a user");
 
+    const token = await prisma.verificationToken.create({
+      data: {
+        token: `${randomUUID()}${randomUUID()}`.replace(/-/g, ""),
+        userId: newUser.id,
+      },
+    });
+
+    // Send mail to user
+    sendMail(newUser, token);
+
     return NextResponse.json({
       user: {
         name: newUser.name,
@@ -65,7 +77,6 @@ export async function POST(request: NextRequest, response: NextResponse) {
     if (error instanceof yup.ValidationError) {
       return NextResponse.json(formatYupErrors(error), { status: 400 });
     }
-    console.log(error);
     return NextResponse.json(error, { status: 500 });
   }
 }

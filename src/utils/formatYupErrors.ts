@@ -1,3 +1,5 @@
+import "server-only";
+
 import { ValidationError } from "yup";
 
 export function formatYupErrors(validationErrors: ValidationError) {
