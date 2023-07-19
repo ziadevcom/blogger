@@ -74,7 +74,7 @@ function Login() {
   };
 
   return (
-    <div className="p-4 md:p-8">
+    <div className="w-full p-4 md:p-8">
       <h2 className="text-center text-lg md:text-2xl">Login</h2>
       <div className="py-2 md:py-4"></div>
       <form onSubmit={handleSubmit(onSubmit)}>

@@ -7,6 +7,7 @@ import {
   ButtonGroup,
   Button,
   Stack,
+  useColorMode,
 } from "@chakra-ui/react";
 import { Flame, Github } from "lucide-react";
 import React, { useState } from "react";
@@ -15,13 +16,14 @@ import { signIn } from "next-auth/react";
 export function SocialSignIns() {
   const [githubLoading, setGithubLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const { colorMode } = useColorMode();
 
   return (
     <>
       <Box position="relative" padding="10">
         <Divider />
         <AbsoluteCenter
-          bg="white"
+          bg={colorMode === "dark" ? "gray.800" : "white"}
           px="4"
           marginBottom={10}
           width={["100%", "auto"]}
