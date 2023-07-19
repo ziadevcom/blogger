@@ -1,15 +1,16 @@
-import * as yup from "yup";
 import NextAuth from "next-auth";
+import * as yup from "yup";
+import { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/db/prisma.client";
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 
 const ERROR_STATEMENT = "Invalid login credentials.";
 
-const handler = NextAuth({
+export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -49,7 +50,7 @@ const handler = NextAuth({
         if (!user || !user.hashedPassword) throw new Error(ERROR_STATEMENT);
 
         // Check password
-        const isCorrectPassword = await bcrypt.compare(
+        const isCorrectPassword = await bcryptjs.compare(
           password,
           user.hashedPassword
         );
@@ -63,6 +64,11 @@ const handler = NextAuth({
   session: {
     strategy: "jwt",
   },
-  secret: process.env.secret,
-});
+  secret: process.env.NEXTAUTH_SECRET,
+  pages: {
+    signIn: "/login",
+  },
+};
+
+const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
