@@ -1,17 +1,24 @@
+"use client";
+
 import { Logo } from "./Logo";
 import { Navigation } from "./Navigation";
 import { ColorModeSwitcher } from "@/components/ColorModeSwitcher";
 import { UserAvatar } from "./UserAvatar";
+import { Flex, Spacer, chakra, useColorModeValue } from "@chakra-ui/react";
+import { Container } from "@/components/Container";
 
 export function Header() {
   return (
-    <header className="flex justify-between items-center py-4">
-      <Logo />
-      <div className="flex flex-col md:flex-row justify-end items-center gap-2">
-        <Navigation />
-        <ColorModeSwitcher />
-        <UserAvatar />
-      </div>
-    </header>
+    <chakra.header paddingTop={4}>
+      <Container display="flex" flexDirection={["column", "row"]} paddingY="3">
+        <Logo />
+        <Spacer />
+        <div className="flex flex-col items-center justify-end gap-2 md:flex-row">
+          <Navigation />
+          <ColorModeSwitcher />
+          <UserAvatar />
+        </div>
+      </Container>
+    </chakra.header>
   );
 }

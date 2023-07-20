@@ -1,16 +1,17 @@
+import { Container } from "@/components/Container";
 export function Footer() {
   return (
-    <div className="py-4">
+    <Container py={4} mb={4}>
       <p className="text-center">
         Blogger by{" "}
         <a
           href="https://github.com/ziadevcom"
           target="_blank"
-          className="underline text-green-600"
+          className="text-green-600 underline"
         >
           Zia
         </a>
       </p>
-    </div>
+    </Container>
   );
 }
