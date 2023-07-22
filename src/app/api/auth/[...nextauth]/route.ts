@@ -68,6 +68,21 @@ export const authOptions: AuthOptions = {
   pages: {
     signIn: "/login",
   },
+  callbacks: {
+    async jwt({ token, user }) {
+      // Add user email verification status to token
+      if (user) {
+        token.active = user.active;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.active = token.active;
+      }
+      return session;
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);

@@ -2,7 +2,7 @@ import * as yup from "yup";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/db/prisma.client";
 import { formatYupErrors } from "@/utils/formatYupErrors";
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import { randomUUID } from "crypto";
 import { sendMail } from "@/utils/sendMail";
 
@@ -51,7 +51,8 @@ export async function POST(request: NextRequest, response: NextResponse) {
     const newUser = await prisma.user.create({
       data: {
         email,
-        hashedPassword: await bcrypt.hash(password, 10),
+        hashedPassword: await bcryptjs.hash(password, 10),
+        active: false,
       },
     });
 
