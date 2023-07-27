@@ -34,51 +34,60 @@ export const authOptions: AuthOptions = {
         },
       },
       async authorize(credentials, req) {
-        const { email, password }: any = credentials;
+        try {
+          const { email, password }: any = credentials;
 
-        const userLoginSchema = yup.object({
-          email: yup.string().required().email(),
-          password: yup.string().required(),
-        });
+          const userLoginSchema = yup.object({
+            email: yup.string().required().email(),
+            password: yup.string().required(),
+          });
 
-        console.log(credentials);
+          await userLoginSchema.validate({ email, password });
 
-        await userLoginSchema.validate({ email, password });
+          const user = await prisma.user.findFirst({ where: { email } });
 
-        const user = await prisma.user.findFirst({ where: { email } });
+          if (!user || !user.hashedPassword) throw new Error(ERROR_STATEMENT);
 
-        if (!user || !user.hashedPassword) throw new Error(ERROR_STATEMENT);
+          // Check password
+          const isCorrectPassword = await bcryptjs.compare(
+            password,
+            user.hashedPassword
+          );
 
-        // Check password
-        const isCorrectPassword = await bcryptjs.compare(
-          password,
-          user.hashedPassword
-        );
+          if (!isCorrectPassword) throw new Error(ERROR_STATEMENT);
 
-        if (!isCorrectPassword) throw new Error(ERROR_STATEMENT);
-
-        return user;
+          return user;
+        } catch (error) {
+          console.log(error);
+          return null;
+        }
       },
     }),
   ],
-  session: {
-    strategy: "jwt",
-  },
+  session: { strategy: "jwt" },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/login",
   },
   callbacks: {
-    async jwt({ token, user }) {
-      // Add user email verification status to token
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.active = user.active;
+        token.id = user.id;
       }
+
+      // Update active property upon email confirmation
+      if (trigger === "update") {
+        const user = await prisma.user.findFirst({ where: { id: token.id } });
+        if (user) token.active = user.active;
+      }
+
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.active = token.active;
+        session.user.id = token.id;
       }
       return session;
     },

@@ -1,21 +1,40 @@
 "use client";
 import { Link, Spinner } from "@chakra-ui/react";
+import { Session } from "next-auth";
+import { useSession } from "next-auth/react";
 import NextLink from "next/link";
 import { useParams } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+type Status = "loading" | "verified" | "invalid";
 
 export default function Verify() {
   const { token } = useParams();
-  const [status, setStatus] = useState(null);
+
+  const [status, setStatus] = useState<Status>("loading");
+
   let content;
-  console.log(status);
+  const { data: session, status: sessionStatus, update } = useSession();
 
-  if (status === null) {
-    verifyToken(token as string).then((data) => setStatus(data));
-    content = <Spinner size="xl" color="brand.400" />;
-  }
+  useEffect(() => {
+    verifyToken(token as string)
+      .then(() => setStatus("verified"))
+      .catch(() => setStatus("invalid"));
+  }, []);
 
-  if (status === false)
+  useEffect(() => {
+    if (
+      status === "verified" &&
+      sessionStatus === "authenticated" &&
+      session.user?.active === false
+    ) {
+      update();
+    }
+  }, [status, sessionStatus]);
+
+  if (status === "loading") content = <Spinner size="xl" color="brand.400" />;
+
+  if (status === "invalid")
     content = (
       <>
         <h1 className="pb-3 text-center text-2xl">Hmmm...🤔</h1>
@@ -23,7 +42,7 @@ export default function Verify() {
       </>
     );
 
-  if (status)
+  if (status === "verified")
     content = (
       <>
         <h1 className="pb-3 text-center text-2xl">Wohoo! 🥳</h1>
@@ -41,6 +60,8 @@ export default function Verify() {
 
 async function verifyToken(token: string) {
   const response = await fetch(`/api/auth/verify/${token}`);
-  if (!response.ok) return false;
+
+  if (!response.ok) throw Error("Invalid token.");
+
   return await response.json();
 }
