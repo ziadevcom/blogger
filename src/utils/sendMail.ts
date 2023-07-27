@@ -1,7 +1,8 @@
 import "server-only";
 
-import { User, VerificationToken } from "@prisma/client";
+import { VerificationToken } from "@prisma/client";
 import { transporter } from "./NodeMailer";
+import { User } from "next-auth";
 
 export async function sendMail(user: User, token: VerificationToken) {
   const { name, email } = user;
