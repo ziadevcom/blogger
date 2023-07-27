@@ -13,6 +13,7 @@ export function Container(props: ContainerProps) {
       maxW="container.xl"
       bg={useColorModeValue("white", "gray.800")}
       rounded="2"
+      paddingX="0"
       {...props}
     >
       {props.children}

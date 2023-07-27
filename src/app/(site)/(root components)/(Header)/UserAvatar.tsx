@@ -54,7 +54,7 @@ export function UserAvatar() {
             </Text>
             <Link
               as={NextLink}
-              href="/profile"
+              href="/settings/user"
               padding={2}
               borderRadius={4}
               _hover={{ background: "brand.400", color: "white" }}

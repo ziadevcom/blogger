@@ -16,28 +16,26 @@ import { useForm } from "react-hook-form";
 import { PasswordInput } from "@/components/PasswordInput";
 import { SocialSignIns } from "@/components/SocialSignIns";
 
-const schema = yup
-  .object({
-    email: yup
-      .string()
-      .required("Email is required")
-      .email("Must be a valid email."),
-    password: yup
-      .string()
-      .required("Password is required.")
-      .notOneOf([yup.ref("email")], "Password can't be the same as email.")
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-        "Password must contain 8 characters, one uppercase, one lowercase, one number and one special case character."
-      ),
-    confirmPassword: yup
-      .string()
-      .required("Password is required.")
-      // use oneOf to match one of the values inside the array.
-      // use "ref" to get the value of passwrod.
-      .oneOf([yup.ref("password")], "Passwords don't match."),
-  })
-  .required();
+const schema = yup.object({
+  email: yup
+    .string()
+    .required("Email is required")
+    .email("Must be a valid email."),
+  password: yup
+    .string()
+    .required("Password is required.")
+    .notOneOf([yup.ref("email")], "Password can't be the same as email.")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+      "Password must contain 8 characters, one uppercase, one lowercase, one number and one special case character."
+    ),
+  confirmPassword: yup
+    .string()
+    .required("Password is required.")
+    // use oneOf to match one of the values inside the array.
+    // use "ref" to get the value of passwrod.
+    .oneOf([yup.ref("password")], "Passwords don't match."),
+});
 type FormData = yup.InferType<typeof schema>;
 
 function Register() {

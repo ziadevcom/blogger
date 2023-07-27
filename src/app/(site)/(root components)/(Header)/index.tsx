@@ -10,7 +10,12 @@ import { Container } from "@/components/Container";
 export function Header() {
   return (
     <chakra.header paddingTop={4}>
-      <Container display="flex" flexDirection={["column", "row"]} paddingY="3">
+      <Container
+        display="flex"
+        flexDirection={["column", "row"]}
+        paddingY="3"
+        paddingX="4"
+      >
         <Logo />
         <Spacer />
         <div className="flex flex-col items-center justify-end gap-2 md:flex-row">
