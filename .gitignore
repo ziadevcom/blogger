@@ -14,6 +14,7 @@
 
 #prisma
 /src/db/prisma/migrations/
+/src/db/prisma/migrations/*
 *.db
 
 # production

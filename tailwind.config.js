@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+import { theme as chakraTheme } from "@chakra-ui/react";
+
 module.exports = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -7,10 +10,19 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      colors: {
+        brand: {
+          50: chakraTheme.colors.green[50],
+          100: chakraTheme.colors.green[100],
+          200: chakraTheme.colors.green[200],
+          300: chakraTheme.colors.green[300],
+          400: chakraTheme.colors.green[400],
+          500: chakraTheme.colors.green[500],
+          600: chakraTheme.colors.green[600],
+          700: chakraTheme.colors.green[700],
+          800: chakraTheme.colors.green[800],
+          900: chakraTheme.colors.green[900],
+        },
       },
     },
   },
