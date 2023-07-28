@@ -1,6 +1,6 @@
 "use client";
 import { ButtonGroup, Skeleton, Spinner } from "@chakra-ui/react";
-import { UserPlus, LogInIcon, Menu } from "lucide-react";
+import { UserPlus, LogInIcon, BookIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/Button";
 import { useSession } from "next-auth/react";
@@ -14,8 +14,8 @@ export function Navigation() {
   return (
     <nav>
       {session.status === "authenticated" ? (
-        <Link href="/admin">
-          <Button leftIcon={<Menu size={18} />}>Admin</Button>
+        <Link href="/posts">
+          <Button leftIcon={<BookIcon size={18} />}>Posts</Button>
         </Link>
       ) : (
         <ButtonGroup className="">

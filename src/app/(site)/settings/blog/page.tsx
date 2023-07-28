@@ -1,5 +1,5 @@
 "use client";
-import { CreateBlogForm } from "./(components)/CreateBlogForm";
+import { CreateBlogForm } from "./_components/CreateBlogForm";
 import { useEffect, useState } from "react";
 import {
   Alert,
@@ -9,7 +9,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { BlogSettingsForm } from "./(components)/BlogSettingsForm";
+import { BlogSettingsForm } from "./_components/BlogSettingsForm";
 import { BlogData } from "./(types)/types";
 
 export default function BlogSettings() {

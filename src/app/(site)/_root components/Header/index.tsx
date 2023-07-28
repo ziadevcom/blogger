@@ -4,7 +4,7 @@ import { Logo } from "./Logo";
 import { Navigation } from "./Navigation";
 import { ColorModeSwitcher } from "@/components/ColorModeSwitcher";
 import { UserAvatar } from "./UserAvatar";
-import { Flex, Spacer, chakra, useColorModeValue } from "@chakra-ui/react";
+import { Spacer, chakra } from "@chakra-ui/react";
 import { Container } from "@/components/Container";
 
 export function Header() {

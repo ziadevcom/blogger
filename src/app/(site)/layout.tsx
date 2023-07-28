@@ -3,8 +3,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "@/contexts";
-import { Header } from "@/app/(site)/(root components)/(Header)/index";
-import { Footer } from "./(root components)/(Footer)/Footer";
+import { Header } from "@/app/(site)/_root components/Header/index";
+import { Footer } from "@/app/(site)/_root components/Footer/Footer";
 import {
   Box,
   Container as ChakraContainer,

@@ -1,4 +1,4 @@
-import { SettingsNavigation } from "./(components)/Navigation";
+import { SettingsNavigation } from "./_components/Navigation";
 import { getServerSession } from "next-auth";
 import EmailNotVerified from "@/components/EmailNotVerified";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
