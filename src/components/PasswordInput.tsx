@@ -1,4 +1,5 @@
-import { InputGroup, InputRightElement, Button, Input } from "@chakra-ui/react";
+import { InputGroup, InputRightElement, Button } from "@chakra-ui/react";
+import { Input } from "@/components/Input";
 import { Eye, EyeOff } from "lucide-react";
 import { useState, forwardRef } from "react";
 

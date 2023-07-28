@@ -7,11 +7,11 @@ import {
   FormLabel,
   FormErrorMessage,
   Button,
-  Input,
   Stack,
   useToast,
   FormHelperText,
 } from "@chakra-ui/react";
+import { Input } from "@/components/Input";
 import React from "react";
 import { useForm } from "react-hook-form";
 

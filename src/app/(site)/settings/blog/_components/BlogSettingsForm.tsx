@@ -4,11 +4,11 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Input,
   Stack,
   ToastProps,
   useToast,
 } from "@chakra-ui/react";
+import { Input } from "@/components/Input";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
