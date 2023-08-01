@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { BlogSettingsForm } from "./_components/BlogSettingsForm";
-import { BlogData } from "./(types)/types";
+import { BlogData } from "./types";
 
 export default function BlogSettings() {
   const [hasBlog, setHasBlog] = useState<boolean | null>(null);
