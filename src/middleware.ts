@@ -1,4 +1,4 @@
-export const config = { matcher: ["/login", "/register"] };
+export const config = { matcher: ["/login", "/register", "/posts/:path*"] };
 
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
