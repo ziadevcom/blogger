@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/Input";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 const requiredError = "This is a requried field.";
 
@@ -37,6 +38,7 @@ export function CreateBlogForm({
 }: {
   doesBlogExists: Function;
 }) {
+  const router = useRouter();
   const toast = useToast();
   const {
     handleSubmit,
@@ -61,6 +63,7 @@ export function CreateBlogForm({
         position: "bottom-right",
       });
       doesBlogExists();
+      router.refresh();
     } catch (error: any) {
       console.log(error);
       console.log(error?.response?.data);
