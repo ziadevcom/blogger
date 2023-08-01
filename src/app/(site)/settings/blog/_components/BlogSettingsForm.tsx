@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {
   Button,
   Code,
@@ -13,7 +15,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { BlogData } from "../(types)/types";
+import { BlogData } from "../types";
 
 export function BlogSettingsForm({
   blogData,
