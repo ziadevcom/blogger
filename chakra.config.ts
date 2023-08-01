@@ -1,4 +1,3 @@
-import { mode } from "@chakra-ui/theme-tools";
 import "@fontsource/syne/400.css";
 import "@fontsource/inter/400.css";
 
@@ -16,6 +15,10 @@ const customTheme = extendTheme(
         border: {
           default: "gray.300",
           _dark: "gray.700",
+        },
+        container: {
+          default: "white",
+          _dark: "gray.800",
         },
       },
     },
