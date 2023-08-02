@@ -49,6 +49,7 @@ model User {
     updatedAt         DateTime            @updatedAt
     VerificationToken VerificationToken[]
     Blog              Blog[]
+    Post              Post[]
 }
 
 model Blog {
@@ -59,6 +60,22 @@ model Blog {
     author      String
     userId      String
     User        User   @relation(fields: [userId], references: [id])
+    Post        Post[]
+}
+
+model Post {
+    id             String   @id @default(cuid())
+    title          String
+    content        String
+    slug           String   @unique
+    featured_image String?
+    status         String
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+    blogId         String
+    userId         String
+    User           User     @relation(fields: [userId], references: [id])
+    Blog           Blog     @relation(fields: [blogId], references: [id])
 }
 
 model VerificationToken {
