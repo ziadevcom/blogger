@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 import { theme as chakraTheme } from "@chakra-ui/react";
+import defaultTheme from "tailwindcss/defaultTheme";
 
 module.exports = {
   content: [
@@ -24,6 +25,10 @@ module.exports = {
           900: chakraTheme.colors.green[900],
         },
       },
+    },
+    screens: {
+      xs: "400px",
+      ...defaultTheme.screens,
     },
   },
   plugins: [],
