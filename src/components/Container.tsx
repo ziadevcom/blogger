@@ -14,6 +14,7 @@ export function Container(props: ContainerProps) {
       bg={useColorModeValue("white", "gray.800")}
       rounded="2"
       paddingX="0"
+      height="100%"
       {...props}
     >
       {props.children}
