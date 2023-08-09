@@ -1,5 +1,12 @@
 export const config = {
-  matcher: ["/login", "/register", "/posts/:path*", "/api/:path*"],
+  matcher: [
+    "/login",
+    "/register",
+    "/posts/:path*",
+    "/api/blog",
+    "/api/post",
+    "/api/posts",
+  ],
 };
 
 import { NextRequest, NextResponse } from "next/server";

@@ -7,7 +7,17 @@ import { theme } from "../../chakra.config";
 export function ChakraUIContext({ children }: { children: React.ReactNode }) {
   return (
     <CacheProvider>
-      <ChakraProvider theme={theme}>
+      <ChakraProvider
+        theme={theme}
+        toastOptions={{
+          defaultOptions: {
+            position: "bottom-right",
+            status: "success",
+            isClosable: true,
+            duration: 5000,
+          },
+        }}
+      >
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         {children}
       </ChakraProvider>
