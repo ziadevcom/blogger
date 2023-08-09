@@ -85,11 +85,11 @@ export function PostsList(/*{ initialPosts }: { initialPosts: Post[] }*/) {
       <div className="mb-4 flex flex-col items-center justify-between gap-4 md:flex-row">
         <div className="flex w-full flex-col items-center justify-between gap-4 xs:flex-row md:w-auto">
           <h2 className="text-2xl font-bold">Manage Your Posts</h2>
-          <Link href="/posts/new" className="w-full xs:w-auto">
+          <a href="/posts/new" className="w-full xs:w-auto">
             <Button className="w-full" tabIndex={-1}>
               Add New
             </Button>
-          </Link>
+          </a>
         </div>
         <SearchPosts onSearch={handleSearch} />
       </div>
@@ -107,7 +107,10 @@ export function PostsList(/*{ initialPosts }: { initialPosts: Post[] }*/) {
                 <h3 className="text-lg md:text-xl">{post.title}</h3>
                 <div className="mt-2 flex items-center gap-2 text-sm text-gray-500">
                   <Clock width={16} />
-                  <p>Updated at {formatePrismaDate(post.createdAt)}</p>
+                  <p>
+                    Updated at{" "}
+                    {formatePrismaDate(post.updatedAt || post.createdAt)}
+                  </p>
                 </div>
                 <div className="mt-4 flex flex-wrap items-center gap-4">
                   <DeleteButton onDelete={handleDeletePost} id={post.id} />
@@ -149,7 +152,7 @@ function DeleteButton({ id, onDelete }: { id: string; onDelete: Function }) {
 
 function EditButton({ postSlug }: { postSlug: string }) {
   return (
-    <Link href={`/posts/edit/${postSlug}`} className="flex items-center">
+    <a href={`/posts/edit/${postSlug}`} className="flex items-center">
       <Button
         colorScheme="brand"
         aria-label="Delete post"
@@ -160,6 +163,6 @@ function EditButton({ postSlug }: { postSlug: string }) {
       >
         Edit Post
       </Button>
-    </Link>
+    </a>
   );
 }
