@@ -29,20 +29,16 @@ export default function RootLayout({
     <html lang="en">
       <body className="overflow-x-hidden">
         <Providers>
-          <Box
-            minHeight="100vh"
-            minWidth="100vw"
-            _dark={{ bg: "gray.900" }}
-            _light={{ bg: "gray.100" }}
-          >
+          <Box _dark={{ bg: "gray.900" }} _light={{ bg: "gray.100" }}>
             <ChakraContainer
               maxW="container.xl"
               display="flex"
               flexDirection="column"
               gap={4}
+              minHeight="100vh"
             >
               <Header />
-              <Container>{children}</Container>
+              <Container flex={1}>{children}</Container>
               <Footer />
             </ChakraContainer>
           </Box>

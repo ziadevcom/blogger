@@ -20,6 +20,10 @@ const customTheme = extendTheme(
           default: "white",
           _dark: "gray.800",
         },
+        focus: {
+          default: "brand.400",
+          _dark: "brand.200",
+        },
       },
     },
     fonts: {
