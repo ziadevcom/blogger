@@ -82,7 +82,6 @@ export async function PUT(req: NextRequest) {
       abortEarly: false,
     });
 
-    // const { title, content, slug, featured_image, status } = formBody;
     const { slug, id: postId, ...postData } = formBody;
 
     const blog = await prisma.blog.findFirst({
@@ -92,16 +91,23 @@ export async function PUT(req: NextRequest) {
     if (!blog) throw new Error("You don't have a blog.");
 
     const urlTaken = await prisma.post.findFirst({
-      where: { slug: slug, blogId: blog.id },
+      where: {
+        slug: slug,
+        blogId: blog.id,
+        NOT: {
+          id: postId,
+        },
+      },
     });
 
     console.log({ urlTaken });
 
-    if (!urlTaken) {
-      // postData.slug = `${formBody.title.replace(
-      //   " ",
-      //   "-"
-      // )}-${crypto.randomUUID()}`;
+    if (urlTaken) {
+      return NextResponse.json(
+        { error: "Post slug is taken." },
+        { status: 400 }
+      );
+    } else {
       postData.slug = slug;
     }
 
