@@ -23,7 +23,9 @@ export default function NewPost() {
     try {
       const { data }: { data: Post } = await axios.post("/api/post", {
         title: "Post title",
-        content: "Your post content goes here...",
+        content: JSON.stringify({
+          ops: [{ insert: "Your post content goes here..." }],
+        }), // Delta object
         slug: crypto.randomUUID(),
         status: "draft",
       });
