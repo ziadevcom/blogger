@@ -1,0 +1,29 @@
+/* Set quill editor font same as the rest of the website */
+.ql-container,
+.ql-container * {
+  font-family: inherit !important;
+}
+
+.ql-toolbar {
+  font-family: inherit !important;
+  /* Make toolbar sticky */
+  position: sticky;
+  top: 0px;
+  z-index: 10;
+  background: white;
+}
+
+.ql-container {
+  font-size: 1rem;
+}
+
+/* Move quill toolbar to bottom */
+/* .quill {
+  display: flex;
+  flex-direction: column-reverse;
+} */
+
+/* .ql-toolbar.ql-snow + .ql-container.ql-snow {
+  border-top: 1px solid #ccc;
+  border-bottom: 0px;
+} */

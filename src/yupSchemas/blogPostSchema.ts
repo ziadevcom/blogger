@@ -2,7 +2,7 @@ import * as yup from "yup";
 
 export const postSchema = yup.object({
   title: yup.string().trim().required(),
-  content: yup.string().trim().required(),
+  content: yup.string().required(),
   slug: yup
     .string()
     .trim()
