@@ -114,7 +114,7 @@ export function PostsList(/*{ initialPosts }: { initialPosts: Post[] }*/) {
                 </div>
                 <div className="mt-4 flex flex-wrap items-center gap-4">
                   <DeleteButton onDelete={handleDeletePost} id={post.id} />
-                  <EditButton postSlug={post.slug} />
+                  <EditButton postId={post.id} />
                 </div>
               </Box>
             );
@@ -150,9 +150,9 @@ function DeleteButton({ id, onDelete }: { id: string; onDelete: Function }) {
   );
 }
 
-function EditButton({ postSlug }: { postSlug: string }) {
+function EditButton({ postId }: { postId: string }) {
   return (
-    <a href={`/posts/edit/${postSlug}`} className="flex items-center">
+    <a href={`/posts/edit/${postId}`} className="flex items-center">
       <Button
         colorScheme="brand"
         aria-label="Delete post"
