@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
 import * as yup from "yup";
+import { notAllowedBlogSlugs } from "@/utils/constants";
 
 export async function GET(req: NextRequest, res: NextResponse) {
   const session = await getServerSession(authOptions);
@@ -54,7 +55,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
         .matches(
           /^[a-zA-Z0-9-]+$/,
           "Blog URL can only contain alphabets, numbers, and dashes."
-        ),
+        )
+        .notOneOf(notAllowedBlogSlugs),
       author: yup.string().required(),
     });
 
@@ -76,7 +78,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
   }
 }
 
-export async function PUT(req: NextRequest, res: NextResponse) {
+export async function PUT(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) return Error();
@@ -101,13 +103,18 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 
     if (!blog) throw Error("No blog found.");
 
-    if (formBody.url) {
-      const isValidURL = /^[a-zA-Z0-9-]+$/.test(formBody.url);
+    if (formBody.slug) {
+      const isValidURL =
+        /^[a-zA-Z0-9-]+$/.test(formBody.slug) &&
+        !notAllowedBlogSlugs.includes(formBody.slug);
 
-      if (!isValidURL) throw Error("Blog url ");
+      if (!isValidURL)
+        throw Error(
+          "Blog url can only contain hyphens, alphabets & numbers. It also can't be one of the reserved words."
+        );
 
       const urlTaken = await prisma.blog.findFirst({
-        where: { slug: formBody.url },
+        where: { slug: formBody.slug },
       });
 
       if (urlTaken) throw Error("URL already taken.");
