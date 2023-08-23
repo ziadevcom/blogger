@@ -79,7 +79,9 @@ export const authOptions: AuthOptions = {
       // Update active property upon email confirmation
       if (trigger === "update") {
         const user = await prisma.user.findFirst({ where: { id: token.id } });
-        if (user) token.active = user.active;
+        if (user) {
+          token.active = user.active;
+        }
       }
 
       return token;

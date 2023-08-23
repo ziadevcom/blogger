@@ -3,7 +3,6 @@ import { prisma } from "@/db/prisma.client";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { Editor } from "./_components/Editor";
-
 export default async function EditPost({ params }: { params: { id: string } }) {
   // Grab post slug
   const id = params.id;
@@ -15,7 +14,16 @@ export default async function EditPost({ params }: { params: { id: string } }) {
   if (!session?.user) return;
 
   const post = await prisma.post.findFirst({
-    where: { id, userId: session?.user.id },
+    select: {
+      id: true,
+      title: true,
+      content: true,
+      featured_image: true,
+      slug: true,
+      status: true,
+      blogSlug: true,
+    },
+    where: { id, userId: session.user.id },
   });
 
   // if it does not, return 404

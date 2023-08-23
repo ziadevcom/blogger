@@ -9,15 +9,11 @@ export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
 
-    console.log(session, req);
-
     if (!session?.user) throw Error("You are not logged in.");
 
     const posts = await prisma.post.findMany({
       where: { userId: session.user.id },
     });
-
-    console.log(posts);
 
     return NextResponse.json({ error: null, posts });
   } catch (error: any) {

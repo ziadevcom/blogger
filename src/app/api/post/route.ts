@@ -18,7 +18,6 @@ export async function POST(req: NextRequest) {
     }
 
     const formBody = await req.json();
-    console.log(formBody);
 
     await postSchema.validate(formBody, {
       abortEarly: false,
@@ -38,18 +37,18 @@ export async function POST(req: NextRequest) {
       where: { userId: session.user.id },
     });
 
-    console.log({
-      data: {
-        ...formBody,
-        blogId: blog?.id,
-        userId: session.user.id,
-      },
-    });
+    if (!blog) return;
+    const { title, content, status, slug, featured_image } = formBody;
 
     const post = await prisma.post.create({
       data: {
-        ...formBody,
+        title,
+        content,
+        status,
+        slug,
+        featured_image,
         blogId: blog?.id,
+        blogSlug: blog?.slug,
         userId: session.user.id,
       },
     });
@@ -99,8 +98,6 @@ export async function PUT(req: NextRequest) {
         },
       },
     });
-
-    console.log({ urlTaken });
 
     if (urlTaken) {
       return NextResponse.json(
