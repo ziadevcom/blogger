@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, background, useColorMode } from "@chakra-ui/react";
+import { Button, useColorMode } from "@chakra-ui/react";
 import { Sun, Moon } from "lucide-react";
 
 export function ColorModeSwitcher() {

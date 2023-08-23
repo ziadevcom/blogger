@@ -1,19 +1,16 @@
-"use client";
-import { ButtonGroup, Skeleton, Spinner } from "@chakra-ui/react";
+import { ButtonGroup } from "@/utils/@chakraui/wrapper";
 import { UserPlus, LogInIcon, BookIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/Button";
-import { useSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-export function Navigation() {
-  const session = useSession();
+export async function Navigation() {
+  const session = await getServerSession(authOptions);
 
-  if (session.status === "loading") {
-    return <Spinner />;
-  }
   return (
     <nav>
-      {session.status === "authenticated" ? (
+      {session?.user ? (
         <Link href="/posts">
           <Button leftIcon={<BookIcon size={18} />}>Posts</Button>
         </Link>

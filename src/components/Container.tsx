@@ -4,7 +4,7 @@ import {
   ContainerProps,
   Container as ChakraContainer,
   useColorModeValue,
-} from "@chakra-ui/react";
+} from "@/utils/@chakraui/wrapper";
 import React from "react";
 
 export function Container(props: ContainerProps) {

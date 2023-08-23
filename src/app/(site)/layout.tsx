@@ -1,19 +1,10 @@
-"use client";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { Providers } from "@/contexts";
 import { Header } from "@/app/(site)/_root components/Header/index";
 import { Footer } from "@/app/(site)/_root components/Footer/Footer";
-import {
-  Box,
-  Container as ChakraContainer,
-  chakra,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Box, Container as ChakraContainer } from "@/utils/@chakraui/wrapper";
 import { Container } from "@/components/Container";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Blogger",

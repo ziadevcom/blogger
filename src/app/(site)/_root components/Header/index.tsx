@@ -1,15 +1,13 @@
-"use client";
-
 import { Logo } from "./Logo";
 import { Navigation } from "./Navigation";
 import { ColorModeSwitcher } from "@/components/ColorModeSwitcher";
 import { UserAvatar } from "./UserAvatar";
-import { Spacer, chakra } from "@chakra-ui/react";
+import { Spacer } from "@/utils/@chakraui/wrapper";
 import { Container } from "@/components/Container";
 
 export function Header() {
   return (
-    <chakra.header paddingTop={4}>
+    <header className="pt-4">
       <Container
         display="flex"
         flexDirection={["column", "row"]}
@@ -24,6 +22,6 @@ export function Header() {
           <UserAvatar />
         </div>
       </Container>
-    </chakra.header>
+    </header>
   );
 }

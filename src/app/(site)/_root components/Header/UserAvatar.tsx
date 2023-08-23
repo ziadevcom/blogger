@@ -1,44 +1,31 @@
-"use client";
-
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import {
   Popover,
   PopoverTrigger,
-  Button,
   PopoverContent,
   PopoverArrow,
   PopoverBody,
   Avatar,
-  SkeletonCircle,
+  PopoverCloseButton,
   Stack,
   Link,
   Text,
-} from "@chakra-ui/react";
-import { LogOut } from "lucide-react";
-import { Session } from "next-auth";
-import { useSession, signOut } from "next-auth/react";
+} from "@/utils/@chakraui/wrapper";
+import { getServerSession } from "next-auth";
 import NextLink from "next/link";
-import { useRouter } from "next/navigation";
+import { LogoutButton } from "./LogoutButton";
 
-export function UserAvatar() {
-  const router = useRouter();
-  const session = useSession();
+export async function UserAvatar() {
+  const session = await getServerSession(authOptions);
 
-  if (session.status === "unauthenticated") return null;
+  if (!session?.user) return null;
 
-  if (session.status === "loading") {
-    return <SkeletonCircle size="10" />;
-  }
-
-  const { name, email, image }: any = session?.data?.user;
-
-  function logOut() {
-    signOut().then(() => router.push("/"));
-  }
+  const { name, email, image }: any = session?.user;
 
   return (
     <Popover>
       <PopoverTrigger>
-        <Avatar name="Dan Abrahmov" src={image} title={name} />
+        <Avatar name={name} src={image} title={name} />
       </PopoverTrigger>
       <PopoverContent>
         <PopoverArrow />
@@ -61,20 +48,10 @@ export function UserAvatar() {
             >
               Edit Profile
             </Link>
-            <Button
-              leftIcon={<LogOut />}
-              onClick={logOut}
-              textAlign="left"
-              variant="link"
-              color="red.500"
-              paddingY={3}
-              backgroundColor="red.100"
-              _hover={{ backgroundColor: "red.200" }}
-            >
-              Logout
-            </Button>
+            <LogoutButton />
           </Stack>
         </PopoverBody>
+        <PopoverCloseButton />
       </PopoverContent>
     </Popover>
   );
