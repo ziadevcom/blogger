@@ -17,7 +17,6 @@ import {
 import axios, { AxiosError } from "axios";
 import { postSchema } from "@/yupSchemas/blogPostSchema";
 import { DeltaStatic } from "quill";
-import { useRouter } from "next/navigation";
 
 type UpdatePostType = {
   id: string;
@@ -26,6 +25,7 @@ type UpdatePostType = {
   content: DeltaStatic;
   status: string;
   featured_image: string | null;
+  blogSlug: string;
 };
 
 type EditorContextType =
@@ -41,9 +41,17 @@ type EditorContextType =
 export const EditorContext = createContext<EditorContextType>(undefined);
 
 export function Editor({
-  blogPostData: { id, title, slug, content, status, featured_image },
+  blogPostData: { id, title, slug, content, status, featured_image, blogSlug },
 }: {
-  blogPostData: Post;
+  blogPostData: {
+    id: string;
+    title: string;
+    content: string;
+    slug: string;
+    featured_image: string | null;
+    status: string;
+    blogSlug: string;
+  };
 }) {
   const [postData, setPostData] = useState<UpdatePostType>({
     id,
@@ -52,12 +60,12 @@ export function Editor({
     content: JSON.parse(content),
     status,
     featured_image,
+    blogSlug,
   });
   const [submitting, setSubmitting] = useState(false);
   const [modified, setModified] = useState(false);
   const firstRender = useRef(true);
   const toast = useToast();
-  const router = useRouter();
 
   useEffect(() => {
     if (firstRender.current) {

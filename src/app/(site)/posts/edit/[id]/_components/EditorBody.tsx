@@ -1,7 +1,12 @@
+import dynamic from "next/dynamic";
 import axios from "axios";
 import { useContext, useMemo, useState } from "react";
 import { EditorContext } from "./Editor";
 import ReactQuill, { Quill } from "react-quill";
+const QuillNoSSRWrapper = dynamic(() => import("react-quill"), {
+  ssr: false,
+  loading: () => <p>Loading ...</p>,
+});
 import { DeltaStatic, Sources } from "quill";
 // @ts-ignore
 import ImageUploader from "quill-image-uploader";
@@ -14,8 +19,7 @@ import "quill-image-uploader/dist/quill.imageUploader.min.css"; // Import to ena
 
 //BEGIN allow image alignment styles
 const ImageFormatAttributesList = ["alt", "height", "width", "style"];
-
-var BaseImageFormat = Quill.import("formats/image");
+const BaseImageFormat = Quill.import("formats/image");
 class ImageFormat extends BaseImageFormat {
   static formats(domNode: HTMLElement) {
     return ImageFormatAttributesList.reduce(function (formats, attribute) {
@@ -38,7 +42,6 @@ class ImageFormat extends BaseImageFormat {
     }
   }
 }
-
 Quill.register(ImageFormat, true);
 //END allow image alignment styles
 
@@ -109,7 +112,7 @@ export function EditorBody() {
 
   return (
     <div className="w-full" data-color-mode="light">
-      <ReactQuill
+      <QuillNoSSRWrapper
         {...quillOptions}
         value={content}
         onChange={handleEditorChange}

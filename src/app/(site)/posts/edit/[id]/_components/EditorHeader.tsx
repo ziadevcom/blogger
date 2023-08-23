@@ -29,7 +29,7 @@ export function EditorHeader() {
       />
       <Spacer space={4} />
       <InputGroup>
-        <InputLeftAddon>/</InputLeftAddon>
+        <InputLeftAddon>/{postData.blogSlug}/</InputLeftAddon>
         <Input
           display="inline"
           value={slug}
