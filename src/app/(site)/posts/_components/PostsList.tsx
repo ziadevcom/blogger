@@ -1,19 +1,17 @@
 "use client";
 
+import { EditButton, DeleteButton, PreviewButton } from "./Buttons";
 import { useEffect, useState } from "react";
 import { SearchPosts } from "./SearchPosts";
 import { Post } from "@/types/post-types";
-import { Box, useToast } from "@chakra-ui/react";
+import { Box, useToast } from "@/utils/@chakraui/wrapper";
 import axios from "axios";
-import { Clock, Edit, Plus, X } from "lucide-react";
-import { useRouterRefresh } from "@/hooks/useRouterRefresh";
+import { Clock } from "lucide-react";
 import { Button } from "@/components/Button";
-import Link from "next/link";
 import { formatePrismaDate } from "@/utils/formatedPrismaDate";
 import { Spinner } from "@/components/Spinner";
 
-export function PostsList(/*{ initialPosts }: { initialPosts: Post[] }*/) {
-  // const refreshRouter = useRouterRefresh();
+export function PostsList() {
   const toast = useToast();
   const [allPosts, setAllPosts] = useState<Post[]>();
   const [posts, setPosts] = useState<Post[]>();
@@ -114,7 +112,10 @@ export function PostsList(/*{ initialPosts }: { initialPosts: Post[] }*/) {
                 </div>
                 <div className="mt-4 flex flex-wrap items-center gap-4">
                   <DeleteButton onDelete={handleDeletePost} id={post.id} />
+
                   <EditButton postId={post.id} />
+
+                  <PreviewButton post={post} />
                 </div>
               </Box>
             );
@@ -124,45 +125,5 @@ export function PostsList(/*{ initialPosts }: { initialPosts: Post[] }*/) {
         <p>No posts found.</p>
       )}
     </>
-  );
-}
-
-function DeleteButton({ id, onDelete }: { id: string; onDelete: Function }) {
-  const [deleting, setDeleting] = useState(false);
-
-  function handleClick(postId: string) {
-    setDeleting(true);
-    onDelete(id).then(() => setDeleting(false));
-  }
-
-  return (
-    <Button
-      colorScheme="red"
-      aria-label="Delete post"
-      onClick={() => handleClick(id)}
-      isLoading={deleting}
-      leftIcon={<X width={18} />}
-      variant="link"
-      fontSize="sm"
-    >
-      Delete
-    </Button>
-  );
-}
-
-function EditButton({ postId }: { postId: string }) {
-  return (
-    <a href={`/posts/edit/${postId}`} className="flex items-center">
-      <Button
-        colorScheme="brand"
-        aria-label="Delete post"
-        leftIcon={<Edit width={18} />}
-        variant="link"
-        fontSize="sm"
-        tabIndex={-1}
-      >
-        Edit Post
-      </Button>
-    </a>
   );
 }
