@@ -29,16 +29,6 @@ model Account {
     @@index([userId])
 }
 
-model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    @@index([userId])
-}
-
 model User {
     id                String              @id @default(cuid())
     name              String?
@@ -48,7 +38,6 @@ model User {
     hashedPassword    String?
     image             String?
     accounts          Account[]
-    sessions          Session[]
     createdAt         DateTime            @default(now())
     updatedAt         DateTime            @updatedAt
     VerificationToken VerificationToken[]
@@ -63,7 +52,7 @@ model Blog {
     slug        String
     author      String
     userId      String
-    User        User   @relation(fields: [userId], references: [id])
+    User        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     Post        Post[]
 
     @@unique([id, slug])
@@ -82,10 +71,38 @@ model Post {
     blogId         String
     blogSlug       String
     userId         String
-    User           User     @relation(fields: [userId], references: [id])
-    Blog           Blog     @relation(fields: [blogId, blogSlug], references: [id, slug])
+    User           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    Blog           Blog     @relation(fields: [blogId, blogSlug], references: [id, slug], onDelete: Cascade)
+    MediaItem      Media[]
 
     @@index([userId, blogId, blogSlug])
+}
+
+model Media {
+    id                String  @id @default(cuid())
+    asset_id          String
+    public_id         String
+    version           Int
+    version_id        String
+    signature         String
+    width             Int
+    height            Int
+    format            String
+    resource_type     String
+    created_at        String
+    bytes             Int
+    type              String
+    etag              String
+    placeholder       Boolean
+    url               String
+    secure_url        String
+    folder            String
+    access_mode       String
+    original_filename String
+    postId            String
+    Post              Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+    @@index([postId])
 }
 
 model VerificationToken {

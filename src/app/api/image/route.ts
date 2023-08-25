@@ -3,12 +3,23 @@ import path from "path";
 import { getAppRootDir } from "@/utils/getAppRootDir";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
+import { prisma } from "@/db/prisma.client";
 
-export async function POST(request: NextRequest, response: NextResponse) {
+export async function POST(request: NextRequest) {
   try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user)
+      return NextResponse.json({ message: "Not logged in." }, { status: 401 });
+
     const formData = await request.formData();
 
     const image: File | null = formData.get("image") as unknown as File;
+    const postId = formData.get("postId");
+
+    console.log({ postId, formData });
 
     if (!image)
       return NextResponse.json(
@@ -32,9 +43,60 @@ export async function POST(request: NextRequest, response: NextResponse) {
       secure: true,
     });
 
-    const { secure_url } = await cloudinary.uploader.upload(imagePath);
+    const uploadResponse = await cloudinary.uploader.upload(imagePath, {
+      folder: session.user.id,
+    });
+
+    const {
+      asset_id,
+      public_id,
+      version,
+      version_id,
+      signature,
+      width,
+      height,
+      format,
+      resource_type,
+      created_at,
+      bytes: imageBytes,
+      type,
+      etag,
+      placeholder,
+      url,
+      secure_url,
+      folder,
+      access_mode,
+      original_filename,
+    } = uploadResponse;
 
     fs.unlinkSync(imagePath);
+
+    if (typeof postId === "string") {
+      await prisma.media.create({
+        data: {
+          asset_id,
+          public_id,
+          version,
+          version_id,
+          signature,
+          width,
+          height,
+          format,
+          resource_type,
+          created_at,
+          bytes: imageBytes,
+          type,
+          etag,
+          placeholder,
+          url,
+          secure_url,
+          folder,
+          access_mode,
+          original_filename,
+          postId,
+        },
+      });
+    }
 
     return NextResponse.json({
       url: secure_url,
