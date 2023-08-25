@@ -6,6 +6,7 @@ import fs from "fs";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { prisma } from "@/db/prisma.client";
+import { cloudinaryConfig } from "@/utils/constants";
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,7 +20,7 @@ export async function POST(request: NextRequest) {
     const image: File | null = formData.get("image") as unknown as File;
     const postId = formData.get("postId");
 
-    console.log({ postId, formData });
+    console.log("Image sent for uploading to cloudinary ", { postId });
 
     if (!image)
       return NextResponse.json(
@@ -32,16 +33,9 @@ export async function POST(request: NextRequest) {
 
     const imagePath = path.join(getAppRootDir(), "/temp", image.name);
 
-    console.log(imagePath);
-
     fs.writeFileSync(imagePath, buffer);
 
-    cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_NAME,
-      api_key: process.env.CLOUDINARY_KEY,
-      api_secret: process.env.CLOUDINARY_SECRET,
-      secure: true,
-    });
+    cloudinary.config(cloudinaryConfig);
 
     const uploadResponse = await cloudinary.uploader.upload(imagePath, {
       folder: session.user.id,
@@ -94,6 +88,7 @@ export async function POST(request: NextRequest) {
           access_mode,
           original_filename,
           postId,
+          userId: session.user.id,
         },
       });
     }

@@ -8,3 +8,10 @@ export const notAllowedBlogSlugs = [
   "about",
   "about-us",
 ]; // Slugs that are not allowed to be used as blog slug
+
+export const cloudinaryConfig = {
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
+  secure: true,
+};
