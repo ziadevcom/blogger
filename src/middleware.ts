@@ -6,6 +6,7 @@ export const config = {
     "/api/blog",
     "/api/post",
     "/api/posts",
+    "/settings/:path*",
   ],
 };
 
