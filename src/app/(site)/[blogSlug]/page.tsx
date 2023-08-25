@@ -81,7 +81,7 @@ function PostItem({
           width={400}
           height={300}
           alt={post.title}
-          className="h-[200px] w-full object-cover"
+          className="h-[200px] w-full object-contain"
         />
       )}
       <Box
