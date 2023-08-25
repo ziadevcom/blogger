@@ -47,6 +47,7 @@ Quill.register(ImageFormat, true);
 
 export function EditorBody() {
   const editorContext = useContext(EditorContext);
+
   const quillOptions = useMemo(() => {
     return {
       theme: "snow",
@@ -75,6 +76,8 @@ export function EditorBody() {
             return new Promise((resolve, reject) => {
               const formData = new FormData();
               formData.append("image", file);
+              if (editorContext?.postData)
+                formData.append("postId", editorContext?.postData.id);
               axios
                 .post("/api/image", formData)
                 .then((res) => {

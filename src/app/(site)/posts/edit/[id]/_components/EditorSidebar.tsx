@@ -72,7 +72,7 @@ export function FeaturedImage() {
   if (!editorContext) return null;
 
   const {
-    postData: { featured_image },
+    postData: { featured_image, id },
     setPostData,
   } = editorContext;
 
@@ -125,7 +125,7 @@ export function FeaturedImage() {
           <ModalHeader>Upload Image</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ImageUpload onUpload={updateFeaturedImage} />
+            <ImageUpload onUpload={updateFeaturedImage} postId={id} />
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -135,8 +135,10 @@ export function FeaturedImage() {
 
 export function ImageUpload({
   onUpload,
+  postId,
 }: {
   onUpload: (imageURL: string) => void;
+  postId: string;
 }) {
   const toast = useToast();
   const [image, setImage] = useState<File | undefined>();
@@ -170,6 +172,7 @@ export function ImageUpload({
       const formData = new FormData();
 
       formData.append("image", image);
+      formData.append("postId", postId);
 
       const response = await axios.post("/api/image", formData);
 
