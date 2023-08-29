@@ -48,8 +48,6 @@ function Login() {
         redirect: false,
       });
 
-      console.log(user);
-
       if (user?.error)
         throw new Error("Invalid login credentials. Please try again.");
 

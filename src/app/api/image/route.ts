@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     const bytes = await image.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const imagePath = path.join(getAppRootDir(), "/temp", image.name);
+    const imagePath = path.join(getAppRootDir(), "/tmp", image.name);
 
     fs.writeFileSync(imagePath, buffer);
 
