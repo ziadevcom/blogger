@@ -1,4 +1,5 @@
 "use client";
+
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -59,6 +60,7 @@ function Login() {
         isClosable: true,
       });
       await sleep(2000);
+      router.refresh(); // Refresh router to re-render SSR'ed components
       return router.push("/");
     } catch (error: any) {
       toast({
