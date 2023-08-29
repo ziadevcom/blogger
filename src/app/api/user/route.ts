@@ -24,8 +24,6 @@ export async function DELETE(request: NextRequest) {
       where: { userId: session.user.id },
     });
 
-    console.log({ userUploadedMedia });
-
     if (userUploadedMedia.length > 0) {
       cloudinary.config(cloudinaryConfig);
 

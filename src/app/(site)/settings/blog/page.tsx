@@ -1,13 +1,8 @@
 "use client";
 import { CreateBlogForm } from "./_components/CreateBlogForm";
 import { useEffect, useState } from "react";
-import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-  Spinner,
-} from "@chakra-ui/react";
+import { Alert, AlertDescription, AlertIcon } from "@chakra-ui/react";
+import { Spinner } from "@/components/Spinner";
 import axios from "axios";
 import { BlogSettingsForm } from "./_components/BlogSettingsForm";
 import { BlogData } from "./types";
@@ -23,7 +18,6 @@ export default function BlogSettings() {
   async function doesBlogExists() {
     try {
       const res = await axios.get("/api/blog");
-      console.log(res);
 
       if (res.data.blog === null) {
         return setHasBlog(false);
@@ -36,7 +30,7 @@ export default function BlogSettings() {
     }
   }
 
-  if (hasBlog === null) return <Spinner colorScheme="brand" />;
+  if (hasBlog === null) return <Spinner text="Loading blog..." />;
 
   if (hasBlog === false) {
     return (

@@ -70,7 +70,7 @@ export const authOptions: AuthOptions = {
     signIn: "/login",
   },
   callbacks: {
-    async jwt({ token, user, trigger, session }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         token.active = user.active;
         token.id = user.id;
@@ -78,7 +78,10 @@ export const authOptions: AuthOptions = {
 
       // Update active property upon email confirmation
       if (trigger === "update") {
-        const user = await prisma.user.findFirst({ where: { id: token.id } });
+        const user = await prisma.user.findFirst({
+          where: { id: token.id },
+        });
+
         if (user) {
           token.active = user.active;
         }

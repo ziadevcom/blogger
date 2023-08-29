@@ -1,7 +1,4 @@
-"use client";
-
-import React from "react";
-import { chakra, Box } from "@chakra-ui/react";
+import { Box } from "@/utils/@chakraui/wrapper";
 export default function AuthLayout({
   children,
 }: {

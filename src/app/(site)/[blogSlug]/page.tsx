@@ -34,19 +34,25 @@ export default async function Blog({
   return (
     <div>
       <Box
-        className="flex min-h-[300px] flex-col items-center justify-center gap-4 p-4"
+        className="flex min-h-[200px] flex-col items-center justify-center gap-4 p-4 md:min-h-[300px]"
         bg="brand.400"
         color="white"
       >
-        <h1 className="text-3xl font-bold capitalize">{blog.title}</h1>
+        <h1 className="text-2xl font-bold capitalize md:text-3xl">
+          {blog.title}
+        </h1>
         <p className="text-center">{blog.description}</p>
       </Box>
 
-      <div className="grid grid-cols-1 gap-10 p-4 py-8 sm:grid-cols-2 md:p-8 md:py-12 lg:grid-cols-3 ">
-        {posts.map((post) => {
-          return <PostItem key={post.id} post={post} />;
-        })}
-      </div>
+      {posts.length > 0 ? (
+        <div className="grid grid-cols-1 gap-10 p-4 py-8 sm:grid-cols-2 md:p-8 md:py-12 lg:grid-cols-3 ">
+          {posts.map((post) => {
+            return <PostItem key={post.id} post={post} />;
+          })}
+        </div>
+      ) : (
+        <p className="py-8 text-center text-2xl">No posts found.</p>
+      )}
     </div>
   );
 }

@@ -46,7 +46,7 @@ export async function UserAvatar() {
               borderRadius={4}
               _hover={{ background: "brand.400", color: "white" }}
             >
-              Edit Profile
+              Settings
             </Link>
             <LogoutButton />
           </Stack>

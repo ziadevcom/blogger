@@ -1,5 +1,5 @@
 "use client";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -43,7 +43,6 @@ export function CreateBlogForm({
   const {
     handleSubmit,
     register,
-    setError,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
@@ -54,14 +53,15 @@ export function CreateBlogForm({
     console.log(values);
 
     try {
-      const res = await axios.post("/api/blog", values);
-      console.log(res.data);
+      await axios.post("/api/blog", values);
+
       toast({
         title: "Blog created.",
         status: "success",
         isClosable: true,
         position: "bottom-right",
       });
+
       doesBlogExists();
       router.refresh();
     } catch (error: any) {
