@@ -1,12 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import path from "path";
-import { getAppRootDir } from "@/utils/getAppRootDir";
-import { v2 as cloudinary } from "cloudinary";
-import fs from "fs";
+import {
+  UploadApiErrorResponse,
+  UploadApiResponse,
+  v2 as cloudinary,
+} from "cloudinary";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { prisma } from "@/db/prisma.client";
 import { cloudinaryConfig } from "@/utils/constants";
+import streamifier from "streamifier";
+
+cloudinary.config(cloudinaryConfig);
 
 export async function POST(request: NextRequest) {
   try {
@@ -20,8 +24,6 @@ export async function POST(request: NextRequest) {
     const image: File | null = formData.get("image") as unknown as File;
     const postId = formData.get("postId");
 
-    console.log("Image sent for uploading to cloudinary ", { postId });
-
     if (!image)
       return NextResponse.json(
         { error: "No image provided." },
@@ -31,15 +33,7 @@ export async function POST(request: NextRequest) {
     const bytes = await image.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const imagePath = path.join(getAppRootDir(), "/tmp", image.name);
-
-    fs.writeFileSync(imagePath, buffer);
-
-    cloudinary.config(cloudinaryConfig);
-
-    const uploadResponse = await cloudinary.uploader.upload(imagePath, {
-      folder: session.user.id,
-    });
+    const uploadResponse = await uploadImage(buffer, session.user.id);
 
     const {
       asset_id,
@@ -62,8 +56,6 @@ export async function POST(request: NextRequest) {
       access_mode,
       original_filename,
     } = uploadResponse;
-
-    fs.unlinkSync(imagePath);
 
     if (typeof postId === "string") {
       await prisma.media.create({
@@ -97,7 +89,32 @@ export async function POST(request: NextRequest) {
       url: secure_url,
     });
   } catch (error: any) {
-    console.log(error);
-    return NextResponse.json({ message: error.message }, { status: 500 });
+    console.log({ error });
+
+    return NextResponse.json(
+      { message: error.message || error },
+      { status: 500 }
+    );
   }
+}
+
+async function uploadImage(
+  buffer: Buffer,
+  userId: string
+): Promise<UploadApiResponse> {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder: userId,
+      },
+      (
+        error: UploadApiErrorResponse | undefined,
+        result: UploadApiResponse | undefined
+      ) => {
+        if (result) resolve(result);
+        else reject(error);
+      }
+    );
+    streamifier.createReadStream(buffer).pipe(uploadStream);
+  });
 }
