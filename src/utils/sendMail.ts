@@ -7,7 +7,14 @@ import { User } from "next-auth";
 export async function sendMail(user: User, token: VerificationToken) {
   const { name, email } = user;
 
-  const verificationLink = `${process.env.HOST}/verify/${token.token}`;
+  const host = process.env.host?.trim();
+  const vercelURL = process.env.VERCEL_URL?.trim();
+
+  const verificationLink = `${
+    vercelURL ? `https://${vercelURL}` : host
+  }/verify/${token.token}`;
+
+  console.log(verificationLink);
 
   return await transporter.sendMail({
     from: "Blogger <me@ziadev.com>", // sender address
