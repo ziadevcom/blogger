@@ -8,9 +8,10 @@ export async function sendMail(user: User, token: VerificationToken) {
   const { name, email } = user;
 
   const verificationLink = `${process.env.HOST}/verify/${token.token}`;
-  await transporter.sendMail({
+
+  const sentMail = await transporter.sendMail({
     from: "Blogger <me@ziadev.com>", // sender address
-    to: email,
+    to: email as string,
     subject: "Verify your Blogger account",
     html: `
     </br>
