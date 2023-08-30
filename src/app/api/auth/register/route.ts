@@ -66,7 +66,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
     });
 
     // Send mail to user
-    sendMail(newUser, token);
+    await sendMail(newUser, token);
 
     return NextResponse.json({
       user: {
