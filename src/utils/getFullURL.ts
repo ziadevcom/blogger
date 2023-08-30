@@ -1,5 +1,8 @@
 import "server-only";
 
 export function getFullURL(pathname: string) {
-  return process.env.HOST + pathname;
+  const host = process.env.host?.trim();
+  const vercelURL = process.env.VERCEL_URL?.trim();
+
+  return (vercelURL ? `https://${vercelURL}` : host) + "/" + pathname;
 }
