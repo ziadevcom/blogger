@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Button } from "@/components/Button";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { prisma } from "@/db/prisma.client";
 
 export async function Navigation({
   slug,
@@ -19,13 +18,21 @@ export async function Navigation({
         <ButtonGroup>
           {slug && (
             <Link href={`/${slug}`}>
-              <Button leftIcon={<BookIcon size={18} />} tabIndex={-1}>
+              <Button
+                fontSize="sm"
+                leftIcon={<BookIcon size={14} />}
+                tabIndex={-1}
+              >
                 My Blog
               </Button>
             </Link>
           )}
           <Link href="/posts">
-            <Button leftIcon={<Settings size={18} />} tabIndex={-1}>
+            <Button
+              fontSize="sm"
+              leftIcon={<Settings size={14} />}
+              tabIndex={-1}
+            >
               Admin
             </Button>
           </Link>
