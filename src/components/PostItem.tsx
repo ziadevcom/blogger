@@ -16,7 +16,6 @@ export function PostItem({
   };
 }) {
   const converter = new QuillDeltaToHtmlConverter(JSON.parse(post.content).ops);
-  console.log(post.content);
   const html = converter.convert();
   const match = html.match(/<p>(.*?)<\/p>/); // get content within first <p> tag
   const excerpt = match ? match[1].replace(/<.*?>/g, "") : ""; // only get the string content and exlude any child html tags

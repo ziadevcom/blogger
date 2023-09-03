@@ -2,7 +2,7 @@ import { getFullURL } from "@/utils/getFullURL";
 import { Post } from "@prisma/client";
 import { notFound } from "next/navigation";
 import { PostItem } from "@/components/PostItem";
-import { headers } from "next/headers";
+import axios from "axios";
 
 export default async function Search({
   searchParams,
@@ -40,17 +40,11 @@ export default async function Search({
 
 async function searchPost(searchQuery: string): Promise<Post[] | null> {
   try {
-    const res = await fetch(getFullURL(`/api/search?q=${searchQuery}`), {
-      headers: headers(),
-    });
+    const res = await axios.get(getFullURL(`/api/search?q=${searchQuery}`));
 
-    if (!res.ok) throw Error("Something went wrong.");
+    if (res.data.count === 0) throw Error("No results found.");
 
-    const data = await res.json();
-
-    if (data.count === 0) throw Error("No results found.");
-
-    return data.posts;
+    return res.data.posts;
   } catch (error) {
     console.log(error);
     return null;
