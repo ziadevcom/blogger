@@ -5,7 +5,8 @@ datasource db {
 }
 
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
+    previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 model Account {
@@ -77,6 +78,9 @@ model Post {
     MediaItem      Media[]
 
     @@index([userId, blogId, blogSlug])
+    @@fulltext([content])
+    @@fulltext([title])
+    @@fulltext([content, title])
 }
 
 model Media {

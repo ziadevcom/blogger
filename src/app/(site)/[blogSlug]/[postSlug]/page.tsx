@@ -2,11 +2,11 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/db/prisma.client";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
-import { Heading, FormControl, FormLabel } from "@/utils/@chakraui/wrapper";
 import Image from "next/image";
 import "quill/dist/quill.core.css";
 import { DeltaInsertOp, QuillDeltaToHtmlConverter } from "quill-delta-to-html";
-import { Input } from "@/components/Input";
+import { Heading } from "@/utils/@chakraui/wrapper";
+import { SearchPosts } from "@/components/SearchPosts";
 
 export default async function Post({
   params,
@@ -53,21 +53,14 @@ export default async function Post({
             className="max-h-[500px] w-full rounded-sm object-contain"
           ></Image>
         )}
-        <Heading>{title}</Heading>
+        <Heading as="h1">{title}</Heading>
         <div
           dangerouslySetInnerHTML={{ __html: converter.convert() }}
           className="ql-editor !p-0 text-base md:text-lg"
         ></div>
       </article>
       <aside className="w-full md:w-1/4">
-        <form action="">
-          <FormControl>
-            <FormLabel fontWeight="semibold" htmlFor="searchPost">
-              Search
-            </FormLabel>
-            <Input id="searchPost" placeholder="Search here..."></Input>
-          </FormControl>
-        </form>
+        <SearchPosts label={true} />
       </aside>
     </div>
   );

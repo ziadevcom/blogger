@@ -8,6 +8,7 @@ import { NavigationMobile } from "./NavigationMobile";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/db/prisma.client";
+import { SearchPosts } from "@/components/SearchPosts";
 
 export async function Header() {
   const session = await getServerSession(authOptions);
@@ -24,6 +25,7 @@ export async function Header() {
         <Spacer />
         <div className="flex items-center justify-center gap-2 md:flex-row md:justify-end md:gap-4">
           <Show above="md">
+            <SearchPosts placeholder="Search..." />
             <Navigation slug={blog?.slug} />
             <ColorModeSwitcher />
             <UserAvatar />
