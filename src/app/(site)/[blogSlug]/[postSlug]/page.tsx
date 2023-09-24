@@ -42,26 +42,23 @@ export default async function Post({
   });
 
   return (
-    <div className="flex flex-col gap-4 p-4 font-light md:flex-row md:gap-8 md:p-8">
-      <article className="flex w-full flex-col gap-4 md:w-3/4 ">
+    <div className="flex flex-col justify-center gap-4 p-4 font-light md:flex-row md:gap-8 md:p-8">
+      <article className="flex w-full flex-col gap-4">
         {featured_image && (
           <Image
             src={featured_image}
             alt={title}
             width={800}
             height={500}
-            className="max-h-[500px] w-full rounded-sm object-contain"
+            className="w-full rounded-sm"
           ></Image>
         )}
         <Heading as="h1">{title}</Heading>
         <div
           dangerouslySetInnerHTML={{ __html: converter.convert() }}
-          className="ql-editor !p-0 text-base md:text-lg"
+          className="ql-editor prose max-w-none !p-0"
         ></div>
       </article>
-      <aside className="w-full md:w-1/4">
-        <SearchPosts label={true} />
-      </aside>
     </div>
   );
 }
